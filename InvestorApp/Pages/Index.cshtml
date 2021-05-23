@@ -4,7 +4,32 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form method="post" asp-action="post">
+    <div class="form-group">
+        <label asp-for="LumpSum" class="col-md-2 control-label"></label>
+
+        <input asp-for="LumpSum" />
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Monthly" class="col-md-2 control-label"></label>
+        <input asp-for="Monthly" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Target" class="col-md-2 control-label"></label>
+        <input asp-for="Target" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Timescale" class="col-md-2 control-label"></label>
+        <input asp-for="Timescale" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RiskLevel" class="col-md-2 control-label"></label>
+        <select asp-for="RiskLevel" asp-items="Html.GetEnumSelectList<IndexModel.Level>()">
+            <option value="">Choose a risk level</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" />
+    </div>
+</form>
