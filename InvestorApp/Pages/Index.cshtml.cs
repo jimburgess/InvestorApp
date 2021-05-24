@@ -54,7 +54,7 @@ namespace InvestorApp.Pages
         }
         public async Task OnPostAsync()
         {
-            var request = new Request {LumpSum = LumpSum, Monthly=Monthly,RiskLevel=RiskLevel.ToString(),Target=Target
+            var request = new Request {LumpSum = LumpSum, Monthly=Monthly,RiskLevel=RiskLevel.ToString(),Target=Target, Timescale= Timescale
             };
             var json = JsonSerializer.Serialize(request);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
