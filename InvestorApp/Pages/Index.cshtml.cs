@@ -44,10 +44,6 @@ namespace InvestorApp.Pages
         {
             Low, Medium, High
         }
-        //[BindProperty (SupportsGet =true)]
-        //public string [] XLabels { get; set; }
-        //[BindProperty(SupportsGet = true)]
-        //public IEnumerable<InvestmentData.Bound> Bounds { get; set; }
         [BindProperty (SupportsGet =true)]
         public string GraphData { get; set; }
         public IndexModel(ILogger<IndexModel> logger)
@@ -76,19 +72,33 @@ namespace InvestorApp.Pages
                         InvestmentData data = JsonSerializer.Deserialize<InvestmentData>(jsonResponse,new JsonSerializerOptions {PropertyNameCaseInsensitive=true });
                         if (data != null)
                         {
-                            //XLabels = data.Risks.FirstOrDefault().Bounds.FirstOrDefault().Months.Select(x => x.Index.ToString()).ToArray<string>();
                             var bounds = data.Risks.FirstOrDefault().Bounds.ToList();
                             var graphData = new GraphData();
-                            graphData.Labels = bounds.FirstOrDefault().Months.Select(x => x.Index.ToString()).ToArray<string>();
+                            graphData.Labels = bounds.FirstOrDefault().Months.Select(x => x.Index.ToString()).ToArray();
                             var datasets = new List<GraphData.Dataset>();
+                            var targetAmountLineData = bounds.FirstOrDefault().Months.Select(x => Target).ToList();
                             foreach (var bound in bounds)
                             {
+
                                 datasets.Add(
-                                    new GraphData.Dataset { 
-                                        BackgroundColour = "rgb(255, 99, 132)", 
-                                        BorderColour = "rgb(255, 99, 132)", 
-                                        Data = bound.Months.Select(x => x.Balance), Label = bound.BoundType.ToString() });
+                                    new GraphData.Dataset
+                                    {
+                                        BackgroundColor = $"rgb(255, 99, 256)",
+                                        BorderColor = $"rgb(255, 99, 256)",
+                                        Data = bound.Months.Select(x => x.Balance),
+                                        Label = $"{bound.BoundType} {bound.InterestRate} %"
+                                    });
                             }
+                            datasets.Add(
+                                new GraphData.Dataset
+                                {
+                                    BackgroundColor = $"rgb(255, 249, 60)",
+                                    BorderColor = $"rgb(255, 249, 60)",
+                                    Data = targetAmountLineData,
+                                    Label = "Target Amount"
+                                });
+
+
                             graphData.Datasets = datasets;
                             GraphData = JsonSerializer.Serialize(graphData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
                                 
