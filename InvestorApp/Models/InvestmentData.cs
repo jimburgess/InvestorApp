@@ -17,9 +17,9 @@ namespace InvestorApp.Models
         {
             public BoundType BoundType { get; set; }
             public decimal InterestRate { get; set; }
-            public IEnumerable<Month> Months { get; set; }
+            public IEnumerable<Year> Years { get; set; }
         }
-        public class Month
+        public class Year
         {
             public int Index { get; set; }
             public decimal Deposits { get; set; }

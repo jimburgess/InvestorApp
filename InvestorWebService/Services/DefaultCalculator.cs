@@ -1,6 +1,7 @@
 ﻿using InvestorWebService.Interfaces;
 using InvestorWebService.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InvestorWebService.Services
 {
@@ -26,36 +27,48 @@ namespace InvestorWebService.Services
                     {
                         wideRiskBound1.InterestRate = -1;
                         wideRiskBound1.Months = CalculateMonths(-1, request);
+                        wideRiskBound1.Years = CalculateYears(wideRiskBound1.Months);
                         wideRiskBound2.InterestRate = 7;
                         wideRiskBound2.Months = CalculateMonths(7, request);
+                        wideRiskBound2.Years = CalculateYears(wideRiskBound2.Months);
                         narrowRiskBound1.InterestRate = 2;
                         narrowRiskBound1.Months = CalculateMonths(2, request);
+                        narrowRiskBound1.Years = CalculateYears(narrowRiskBound1.Months);
                         narrowRiskBound2.InterestRate = 4;
                         narrowRiskBound2.Months = CalculateMonths(4, request);
+                        narrowRiskBound2.Years = CalculateYears(narrowRiskBound2.Months);
                         break;
                     }
                 case "l":
                     {
                         wideRiskBound1.InterestRate = 1;
                         wideRiskBound1.Months = CalculateMonths(1, request);
+                        wideRiskBound1.Years = CalculateYears(wideRiskBound1.Months);
                         wideRiskBound2.InterestRate = 3;
                         wideRiskBound2.Months = CalculateMonths(3, request);
+                        wideRiskBound2.Years = CalculateYears(wideRiskBound2.Months);
                         narrowRiskBound1.InterestRate = 1.5M;
                         narrowRiskBound1.Months = CalculateMonths(1.5M, request);
+                        narrowRiskBound1.Years = CalculateYears(narrowRiskBound1.Months);
                         narrowRiskBound2.InterestRate = 2.5M;
                         narrowRiskBound2.Months = CalculateMonths(2.5M, request);
+                        narrowRiskBound2.Years = CalculateYears(narrowRiskBound2.Months);
                         break;
                     }
                 default:
                     {
                         wideRiskBound1.InterestRate = 0;
                         wideRiskBound1.Months = CalculateMonths(0, request);
+                        wideRiskBound1.Years = CalculateYears(wideRiskBound1.Months);
                         wideRiskBound2.InterestRate = 5;
                         wideRiskBound2.Months = CalculateMonths(5, request);
+                        wideRiskBound2.Years = CalculateYears(wideRiskBound2.Months);
                         narrowRiskBound1.InterestRate = 1.5M;
                         narrowRiskBound1.Months = CalculateMonths(1.5M, request);
+                        narrowRiskBound1.Years = CalculateYears(narrowRiskBound1.Months);
                         narrowRiskBound2.InterestRate = 3.5M;
                         narrowRiskBound2.Months = CalculateMonths(3.5M, request);
+                        narrowRiskBound2.Years = CalculateYears(narrowRiskBound2.Months);
                         break;
                     }
             }
@@ -101,6 +114,49 @@ namespace InvestorWebService.Services
                 months.Add(month);
             }
             return months;
+        }
+
+        private IEnumerable<InvestmentResponse.Year> CalculateYears(IEnumerable<InvestmentResponse.Month> months)
+        {
+            List<InvestmentResponse.Year> years = new List<InvestmentResponse.Year>();
+            decimal interest = 0;
+            int index = 0;
+            foreach (var month in months)
+            {
+                if (month.Index == 0)
+                {
+                    years.Add(
+                        new InvestmentResponse.Year
+                        {
+                            Index = 0,
+                            Balance = month.Balance,
+                            Deposits = month.Deposits,
+                            Interest = 0,
+                            TotalDeposits = month.TotalDeposits,
+                            TotalInterest = 0
+                        });
+                }
+                else
+                {
+                    interest += month.Interest;
+                    if (month.Index % 12 == 0)
+                    {
+                        index++;
+                        years.Add(
+                            new InvestmentResponse.Year 
+                            { 
+                                Index = index, 
+                                Balance = month.Balance, 
+                                TotalInterest=month.TotalInterest,
+                                TotalDeposits = month.TotalDeposits,
+                                Interest = interest
+                            });
+                        interest = 0;
+                    }
+                }
+            }
+            
+            return years;
         }
     }
 }

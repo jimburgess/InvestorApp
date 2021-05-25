@@ -74,9 +74,9 @@ namespace InvestorApp.Pages
                         {
                             var bounds = data.Risks.FirstOrDefault().Bounds.ToList();
                             var graphData = new GraphData();
-                            graphData.Labels = bounds.FirstOrDefault().Months.Select(x => x.Index.ToString()).ToArray();
+                            graphData.Labels = bounds.FirstOrDefault().Years.Select(x => x.Index.ToString()).ToArray();
                             var datasets = new List<GraphData.Dataset>();
-                            var targetAmountLineData = bounds.FirstOrDefault().Months.Select(x => Target).ToList();
+                            var targetAmountLineData = bounds.FirstOrDefault().Years.Select(x => Target).ToList();
                             foreach (var bound in bounds)
                             {
 
@@ -85,7 +85,7 @@ namespace InvestorApp.Pages
                                     {
                                         BackgroundColor = $"rgb(255, 99, 256)",
                                         BorderColor = $"rgb(255, 99, 256)",
-                                        Data = bound.Months.Select(x => x.Balance),
+                                        Data = bound.Years.Select(x => x.Balance),
                                         Label = $"{bound.BoundType} {bound.InterestRate} %"
                                     });
                             }

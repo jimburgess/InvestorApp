@@ -19,6 +19,7 @@ namespace InvestorWebService.Models
             public BoundType BoundType { get; set; }
             public decimal InterestRate { get; set; }
             public IEnumerable<Month> Months { get; set; }
+            public IEnumerable<Year>Years { get; set; }
         }
         public class Month
         {
@@ -29,7 +30,15 @@ namespace InvestorWebService.Models
             public decimal TotalInterest { get; set; }
             public decimal Balance { get; set; }
         }
-
+        public class Year
+        {
+            public int Index { get; set; }
+            public decimal Deposits { get; set; }
+            public decimal Interest { get; set; }
+            public decimal TotalDeposits { get; set; }
+            public decimal TotalInterest { get; set; }
+            public decimal Balance { get; set; }
+        }
         public enum Level
         {
             Low, Medium, High
