@@ -1,7 +1,6 @@
 ﻿using InvestorWebService.Interfaces;
 using InvestorWebService.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InvestorWebService.Services
 {
